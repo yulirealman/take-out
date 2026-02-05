@@ -1,6 +1,7 @@
 package com.sky.mapper;
 
 import com.github.pagehelper.Page;
+import com.sky.dto.EmployeeDTO;
 import com.sky.dto.EmployeePageQueryDTO;
 import com.sky.entity.Employee;
 import com.sky.result.PageResult;
@@ -35,4 +36,8 @@ public interface EmployeeMapper {
 
 
     void update(Employee employee);
+
+    @Select("select * from employee where id = #{id}")
+    Employee selectById(Long id);
+
 }
