@@ -37,7 +37,7 @@ public class DishServiceImpl implements DishService {
             for(DishFlavor flavor : dishFlavors){
                 flavor.setDishId(dish.getId());
             }
-            // 3️⃣ 批量插入口味
+            //insert batch flavor
             dishFlavorMapper.insertBatch(dishFlavors);
         }
     }
