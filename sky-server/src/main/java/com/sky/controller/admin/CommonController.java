@@ -19,8 +19,8 @@ import java.util.UUID;
 @ApiOperation("通用接口图片")
 @Slf4j
 public class CommonController {
-    @Autowired
-    private AliOssUtil aliOssUtil;
+//    @Autowired
+//    private AliOssUtil aliOssUtil;
     @PostMapping("/upload")
     public Result<String> upload(MultipartFile file){
         log.info("文件上传：{}", file);
