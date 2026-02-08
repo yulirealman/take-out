@@ -38,5 +38,22 @@
         </if>
     </insert>
 
-
+    <select id="page" resultType="com.sky.vo.DishVO">
+        select d.*, c.name as categoryName
+        from dish d
+        left outer join category c on d.category_id = c.id
+        <where>
+            <if test="name != null and name != ''">
+                and d.name like concat('%', #{name}, '%')
+            </if>
+            <if test="categoryId != null">
+                and d.category_id = #{categoryId}
+            </if>
+            <if test="status != null">
+                and d.status = #{status}
+            </if>
+        </where>
+        <!--        limit will be written by PageHelper-->
+        order by d.create_time desc
+    </select>
 </mapper>
