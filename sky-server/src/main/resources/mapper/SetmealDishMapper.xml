@@ -27,5 +27,16 @@
         </foreach>
     </insert>
 
+    <delete id="deleteBatch">
+        delete from setmeal_dish
+        where id in
+        <foreach collection="ids"
+                 item="id"
+                 open="("
+                 separator=","
+                 close=")">
+            #{id}
+        </foreach>
+    </delete>
 
 </mapper>

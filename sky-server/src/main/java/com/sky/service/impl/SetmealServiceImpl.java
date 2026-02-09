@@ -2,6 +2,7 @@ package com.sky.service;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.sky.constant.StatusConstant;
 import com.sky.dto.SetmealDTO;
 import com.sky.entity.Employee;
 import com.sky.entity.Setmeal;
@@ -56,5 +57,21 @@ public class SetmealServiceImpl implements SetmealService{
         Page<SetmealVO> setmealPage = setmealMapper.page(name, categoryId, status);
 
         return new PageResult(setmealPage.getTotal(), setmealPage.getResult());
+    }
+
+    @Override
+    @Transactional
+    public void delete(List<Long> ids) {
+        ids.forEach(id -> {
+            //todo
+            //can design it wisely, cause it access database multipletimes
+            Setmeal setmeal = setmealMapper.getById(id);
+            if (setmeal.getStatus() == StatusConstant.ENABLE) {
+                throw new RuntimeException("当前状态为起售状态，不能删除");
+            }
+        });
+        setmealMapper.deleteBatch(ids);
+        setmealDishMapper.deleteBatch(ids);
+
     }
 }
