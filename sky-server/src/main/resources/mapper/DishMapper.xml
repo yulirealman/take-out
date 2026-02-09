@@ -81,4 +81,7 @@
         </foreach>
     </select>
 
+    <select id="getByIdWithFlavor" resultType="com.sky.vo.DishVO">
+        select * from dish where id = #{id}
+    </select>
 </mapper>

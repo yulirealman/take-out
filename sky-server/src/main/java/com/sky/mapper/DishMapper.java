@@ -37,4 +37,5 @@ public interface DishMapper {
     int countByStatus(@Param("ids") List<Long> ids,
                       @Param("status") int status);
 
+    DishVO getByIdWithFlavor(Long id);
 }
