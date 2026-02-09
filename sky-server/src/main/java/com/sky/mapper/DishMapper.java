@@ -38,4 +38,7 @@ public interface DishMapper {
                       @Param("status") int status);
 
     DishVO getByIdWithFlavor(Long id);
+
+    @AutoFill(value = OperationType.UPDATE)
+    void update(Dish dish);
 }
