@@ -29,7 +29,7 @@
 
     <delete id="deleteBatch">
         delete from setmeal_dish
-        where id in
+        where setmeal_id in
         <foreach collection="ids"
                  item="id"
                  open="("
