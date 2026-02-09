@@ -2,14 +2,18 @@ package com.sky.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.sky.constant.MessageConstant;
+import com.sky.constant.StatusConstant;
 import com.sky.dto.DishDTO;
 import com.sky.dto.DishPageQueryDTO;
 import com.sky.entity.Dish;
 import com.sky.entity.DishFlavor;
 import com.sky.entity.Employee;
+import com.sky.exception.DeletionNotAllowedException;
 import com.sky.mapper.CategoryMapper;
 import com.sky.mapper.DishFlavorMapper;
 import com.sky.mapper.DishMapper;
+import com.sky.mapper.SetmealDishMapper;
 import com.sky.result.PageResult;
 import com.sky.service.DishService;
 import com.sky.vo.DishVO;
@@ -32,6 +36,8 @@ public class DishServiceImpl implements DishService {
     @Autowired
     private CategoryMapper categoryMapper;
 
+    @Autowired
+    private SetmealDishMapper setmealDishMapper;
     @Override
     @Transactional
     public void saveWithFlavor(DishDTO dishDTO) {
@@ -59,6 +65,37 @@ public class DishServiceImpl implements DishService {
         Page<DishVO> page = dishMapper.page(dishPageQueryDTO);
 
         return new PageResult(page.getTotal(), page.getResult());
+
+    }
+
+    @Override
+    @Transactional
+    public void delete(List<Long> ids) {
+        /*
+        * 业务规则:
+            .可以一次删除一个菜品，也可以批量删除菜品
+            .起售中的菜品不能删除     //status = 0, 停售中的菜品可以删除
+            .被套餐关联的菜品不能删除 //setmeal_dish
+            .删除菜品后，关联的口味数据也需要删除掉
+        * */
+        //判断当前菜品是否能够删除---是否存在起售中的菜品??
+        int onSale = dishMapper.countByStatus(ids, StatusConstant.ENABLE);
+
+        if (onSale > 0) {
+            throw new DeletionNotAllowedException(MessageConstant.DISH_ON_SALE);
+        }
+        //判断当前菜品是否能够删除---是否被套餐关联了??
+        int linked = setmealDishMapper.countByDishIds(ids);
+
+        if (linked > 0) {
+            throw new DeletionNotAllowedException(MessageConstant.DISH_BE_RELATED_BY_SETMEAL);
+        }
+        //删除菜品表中的菜品数据工
+        dishFlavorMapper.deleteByDishIds(ids);
+        //删除菜品关联的口味数据
+        dishMapper.delete(ids);
+
+
 
     }
 }

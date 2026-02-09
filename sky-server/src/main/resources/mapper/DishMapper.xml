@@ -56,4 +56,29 @@
         <!--        limit will be written by PageHelper-->
         order by d.create_time desc
     </select>
+
+    <delete id="delete" >
+        delete from dish
+        <where>
+            id in
+            <foreach item="id" collection="list" open="(" separator="," close=")">
+                #{id}
+            </foreach>
+        </where>
+    </delete>
+
+    <select id="countByStatus" resultType="int">
+        select count(1)
+        from dish
+        where status = #{status}
+        and id in
+        <foreach collection="ids"
+                 item="id"
+                 open="("
+                 separator=","
+                 close=")">
+            #{id}
+        </foreach>
+    </select>
+
 </mapper>

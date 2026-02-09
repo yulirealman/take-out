@@ -11,4 +11,6 @@ public interface DishService {
     void saveWithFlavor(DishDTO dishDTO);
 
     PageResult page(DishPageQueryDTO dishPageQueryDTO);
+
+    void delete(List<Long> ids);
 }

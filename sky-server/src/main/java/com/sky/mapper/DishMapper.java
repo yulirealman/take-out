@@ -10,6 +10,7 @@ import com.sky.enumeration.OperationType;
 import com.sky.vo.DishVO;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
@@ -30,4 +31,10 @@ public interface DishMapper {
     void insert(Dish dish);
 
     Page<DishVO> page(DishPageQueryDTO dishPageQueryDTO);
+
+    void delete(List<Long> ids);
+
+    int countByStatus(@Param("ids") List<Long> ids,
+                      @Param("status") int status);
+
 }

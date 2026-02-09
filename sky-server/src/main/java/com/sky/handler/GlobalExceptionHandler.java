@@ -41,4 +41,9 @@ public class GlobalExceptionHandler {
         }
 
     }
+
+    @ExceptionHandler
+    public Result exceptionHandler(RuntimeException ex){
+        return Result.error(ex.getMessage());
+    }
 }

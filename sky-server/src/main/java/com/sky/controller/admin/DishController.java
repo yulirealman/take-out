@@ -38,4 +38,12 @@ public class DishController {
         return Result.success(pageResult);
 
     }
+
+    @DeleteMapping
+    @ApiOperation("批量删除菜品")
+    public Result delete(@RequestParam List<Long> ids){
+        log.info("批量删除菜品{}", ids);
+        dishService.delete(ids);
+        return Result.success();
+    }
 }
