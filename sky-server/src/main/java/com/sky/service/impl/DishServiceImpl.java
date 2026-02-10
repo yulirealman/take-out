@@ -140,5 +140,15 @@ public class DishServiceImpl implements DishService {
         return dishMapper.list(dish);
     }
 
+    @Override
+    public void updateStatus(Integer status, Long id) {
+        //todo 添加业务逻辑， 想要停售的话需要判断该菜品是否套餐中关联
+        Dish dish = Dish.builder()
+                .id(id)
+                .status(status)
+                .build();
+        dishMapper.update(dish);
+    }
+
 
 }

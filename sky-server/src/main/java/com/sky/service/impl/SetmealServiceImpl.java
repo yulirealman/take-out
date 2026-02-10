@@ -111,6 +111,7 @@ public class SetmealServiceImpl implements SetmealService{
 
     @Override
     public void updateStatus(Integer status, Long id) {
+        //todo 添加业务逻辑， 想要起售的话需要判断该套餐内的菜品是否在售
         Setmeal setmeal = new Setmeal();
         setmeal.setId(id);
         setmeal.setStatus(status);
