@@ -108,4 +108,14 @@ public class SetmealServiceImpl implements SetmealService{
         setmealDishMapper.insertBatch(setmealDishes);
 
     }
+
+    @Override
+    public void updateStatus(Integer status, Long id) {
+        Setmeal setmeal = new Setmeal();
+        setmeal.setId(id);
+        setmeal.setStatus(status);
+
+        setmealMapper.update(setmeal);
+
+    }
 }

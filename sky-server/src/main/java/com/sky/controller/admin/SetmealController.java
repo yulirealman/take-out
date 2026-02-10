@@ -1,6 +1,7 @@
 package com.sky.controller.admin;
 
 import com.github.pagehelper.Page;
+import com.sky.constant.StatusConstant;
 import com.sky.dto.SetmealDTO;
 import com.sky.result.PageResult;
 import com.sky.result.Result;
@@ -69,5 +70,14 @@ public class SetmealController {
         setmealService.update(setmealDTO);
         return Result.success();
     }
+
+    @PostMapping("/status/{status}")
+    @ApiOperation("起售、停售套餐")
+    public Result updateStatus(@PathVariable Integer status, Long id) {
+        log.info("起售、停售套餐{}", id);
+        setmealService.updateStatus(status, id);
+        return Result.success();
+    }
+
 
 }
