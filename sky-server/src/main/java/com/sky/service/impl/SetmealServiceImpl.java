@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -72,6 +73,38 @@ public class SetmealServiceImpl implements SetmealService{
         });
         setmealMapper.deleteBatch(ids);
         setmealDishMapper.deleteBatch(ids);
+
+    }
+
+
+    @Override
+    public SetmealVO getById(Long id) {
+        Setmeal setmeal = setmealMapper.getById(id);
+
+        List<SetmealDish> setmealDishes = setmealDishMapper.getBySetmealId(id);
+
+        SetmealVO setmealVO = new SetmealVO();
+        BeanUtils.copyProperties(setmeal, setmealVO);
+        setmealVO.setSetmealDishes(setmealDishes);
+        return setmealVO;
+    }
+
+
+
+
+
+    @Override
+    @Transactional
+    public void update(SetmealDTO setmealDTO) {
+        Setmeal setmeal = new Setmeal();
+        BeanUtils.copyProperties(setmealDTO, setmeal);
+        setmealDishMapper.deleteBatch(Collections.singletonList(setmealDTO.getId()));
+        setmealMapper.update(setmeal);
+        List<SetmealDish> setmealDishes = setmealDTO.getSetmealDishes();
+        for (SetmealDish setmealDish : setmealDishes) {
+            setmealDish.setSetmealId(setmealDTO.getId());
+        }
+        setmealDishMapper.insertBatch(setmealDishes);
 
     }
 }
