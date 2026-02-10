@@ -78,6 +78,7 @@ public class SetmealServiceImpl implements SetmealService{
 
 
     @Override
+    @Transactional
     public SetmealVO getById(Long id) {
         Setmeal setmeal = setmealMapper.getById(id);
 
